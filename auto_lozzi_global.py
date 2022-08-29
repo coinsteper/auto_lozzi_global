@@ -41,6 +41,7 @@ def find_and_click(img, pos=0):
     height_ = height_g
 
     find_img = pg.locateOnScreen(img, confidence=confi, region=(left_, top_, width_, height_))
+    time.sleep(0.2)
 
     if find_img != None:        
         time.sleep(0.01)
@@ -76,7 +77,7 @@ def make_switch():
         if time.time() - start_time >= 5:
             break
 
-        time.sleep(0.2)
+        time.sleep(0.5)
 
         if find_and_click(img_playstore):
             time.sleep(0.5)
