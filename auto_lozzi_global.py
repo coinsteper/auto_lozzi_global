@@ -6,11 +6,15 @@ import screeninfo
 import time
 import random
 import os
+import sys
 
 img_more = r'C:\python\image_processing\auto_lozzi_global\img\more.png'
 img_more2 = r'C:\python\image_processing\auto_lozzi_global\img\more2.png'
 img_close = r'C:\python\image_processing\auto_lozzi_global\img\close.png'
 img_back = r'C:\python\image_processing\auto_lozzi_global\img\back.png'
+img_appstore = r'C:\python\image_processing\auto_lozzi_global\img\appstore.png'
+img_appstore2 = r'C:\python\image_processing\auto_lozzi_global\img\appstore2.png'
+img_web = r'C:\python\image_processing\auto_lozzi_global\img\web.png'
 
 img_path_x_list = r'C:\python\image_processing\auto_lozzi_global\img\x'
 
@@ -20,12 +24,30 @@ img_playstore = r'C:\python\image_processing\auto_lozzi_global\img\playstore.png
 img_switch = r'C:\python\image_processing\auto_lozzi\img\switch.png'
 #ImageGrab.grab(bbox=None, include_layered_windows=True)
 
+#900 * 1600
+#400 * 685
 tvwindow = pg.getWindowsWithTitle('BlueStacks App Player')
 left_g = tvwindow[0].left
 top_g = tvwindow[0].top
 width_g = tvwindow[0].width
 height_g = tvwindow[0].height
 start_time = time.time()
+
+def find_img(img, pos=0):
+    global start_time
+    Flag = False
+    confi = 0.92
+    
+    top_ = top_g
+    left_ = left_g
+    width_ = width_g
+    height_ = height_g
+
+    find_img = pg.locateOnScreen(img, confidence=confi, region=(left_, top_, width_, height_))
+    if find_img != None:
+        Flag = True
+
+    return Flag
 
 def find_and_click(img, pos=0):
     global start_time
@@ -66,7 +88,7 @@ def find_and_click(img, pos=0):
 
         start_time = time.time()
         Flag = True
-
+    
     return Flag
 
 
@@ -79,6 +101,9 @@ def make_switch():
 
         time.sleep(0.5)
 
+        find_and_click(img_playstore)
+
+        '''
         if find_and_click(img_playstore):
             time.sleep(0.5)
 
@@ -90,6 +115,7 @@ def make_switch():
                 if find_and_click(img_back):
                     start_time = time.time()
                     return True
+        '''
 
 
 if __name__ =='__main__':
@@ -99,13 +125,23 @@ if __name__ =='__main__':
             find_and_click(img_more2)
             find_and_click(img_close)
 
+            if find_img(img_appstore) or find_img(img_web) or find_img(img_appstore2):
+                time.sleep(0.1)
+                find_and_click(img_back)
+                
             # x는 동적으로 추가되더라도 잘 실행 되기 위해
             for i in img_x_list:
                 find_and_click(img_path_x_list + '\\' + i, 1)
 
             if time.time() - start_time >= 30:
                 make_switch()
-
+            
+            
+            print_num = round(time.time() - start_time)            
+            #print('%.2f' % (print_num))
+            print(str(print_num) + '\r'.format(i), end='')
+            sys.stdout.flush()
+            
     except KeyboardInterrupt:
         print("Press Ctrl-C to terminate while statement")
         pass
