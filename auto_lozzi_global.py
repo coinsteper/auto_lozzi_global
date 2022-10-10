@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import pyautogui as pg
-from PIL import ImageGrab
+#from PIL import ImageGrab
 from functools import partial
 import screeninfo
 import time
@@ -23,9 +23,12 @@ img_ok2 = r'C:\python\image_processing\auto_lozzi_global\img\ok2.png'
 img_more = r'C:\python\image_processing\auto_lozzi_global\img\more.png'
 img_more2 = r'C:\python\image_processing\auto_lozzi_global\img\more2.png'
 img_close = r'C:\python\image_processing\auto_lozzi_global\img\close.png'
+img_close2 = r'C:\python\image_processing\auto_lozzi_global\img\close2.png'
+img_close3 = r'C:\python\image_processing\auto_lozzi_global\img\close3.png'
 img_back = r'C:\python\image_processing\auto_lozzi_global\img\back.png'
 img_appstore = r'C:\python\image_processing\auto_lozzi_global\img\appstore.png'
 img_appstore2 = r'C:\python\image_processing\auto_lozzi_global\img\appstore2.png'
+img_appstore3 = r'C:\python\image_processing\auto_lozzi_global\img\appstore3.png'
 img_web = r'C:\python\image_processing\auto_lozzi_global\img\web.png'
 
 img_path_x_list = r'C:\python\image_processing\auto_lozzi_global\img\x'
@@ -92,15 +95,87 @@ def find_and_click(img, pos=0):
     width_ = width_g
     height_ = height_g
 
+    if pos == 1:
+        top_ = top_ + 10
+        width_ = width_ - 260
+        height_ = height_ - 600
+
+    elif pos == 2:
+        top_ = top_ + 10
+        left_ = left_ + 120
+        width_ = width_ - 150
+        height_ = height_ - 600
+
+    elif pos == 3:
+        top_ = top_ + 10
+        left_ = left_ + 240
+        width_ = width_ - 10
+        height_ = height_ - 600
+    
+    elif pos == 4:
+        top_ = top_ + 240
+        left_ = left_
+        width_ = width_ - 260
+        height_ = height_ - 350
+    
+    elif pos == 5:
+        top_ = top_ + 240
+        left_ = left_ + 120
+        width_ = width_ - 120
+        height_ = height_ - 350
+    
+    elif pos == 6:
+        top_ = top_ + 240
+        left_ = left_ + 240
+        width_ = width_ - 10
+        height_ = height_ - 350
+    
+    elif pos == 7:
+        top_ = top_ + 500
+        left_ = left_
+        width_ = width_ - 260
+        height_ = height_
+
+    elif pos == 8:
+        top_ = top_ + 500
+        left_ = left_ + 120
+        width_ = width_ - 120
+        height_ = height_
+
+    elif pos == 9:
+        top_ = top_ + 500
+        left_ = left_ + 240
+        width_ = width_ - 10
+        height_ = height_
+
+    elif pos == 10:
+        top_ = top_
+        left_ = left_
+        width_ = width_
+        height_ = height_ - 600
+    
+    elif pos == 20:
+        top_ = top_ + 240
+        left_ = left_
+        width_ = width_ - 10
+        height_ = height_ - 350
+    
+    elif pos == 30:
+        top_ = top_ + 500
+        left_ = left_
+        width_ = width_
+        height_ = height_
+
     find_img = pg.locateOnScreen(img, confidence=confi, region=(left_, top_, width_, height_))
     time.sleep(0.2)
 
-    if find_img != None:        
+    if find_img != None:
+        print(img)
         time.sleep(0.01)
         start_time = time.time()
 
         # 더 받기 랜덤한 좌표 클릭해서 봇체크 우회
-        if img == img_more or img == img_more2:
+        if img == img_more or img == img_more2 or img == img_box or img == img_more_box2 or img == img_more_box_g:
             find_img = (find_img.left + random.randrange(-5, 5), find_img.top + random.randrange(-5, 5), find_img.width,
                         find_img.height)
             time.sleep(0.01)
@@ -118,7 +193,7 @@ def find_and_click(img, pos=0):
 
         if img == img_box:
             while True:
-                time.sleep(0.05)
+                time.sleep(0.1)
                 find_img = pg.locateOnScreen(img, confidence=confi, region=(left_, top_, width_, height_))
                 if find_img != None:
                     pg.click(find_img, clicks=1, duration=0.1)
@@ -190,28 +265,30 @@ if __name__ =='__main__':
         switch_flag = False
 
         while True:
-            find_and_click(img_box)
+            find_and_click(img_box, 5)
             find_and_click(img_more_box)
             find_and_click(img_more_box2)
-            find_and_click(img_more_box_g)            
-            b_ret = find_and_click(img_gold_box)
+            #find_and_click(img_more_box_g)            
+            b_ret = find_and_click(img_gold_box, 5)
             if b_ret:
                 time.sleep(0.2)
                 make_screenshot()      
             find_and_click(img_more)
             find_and_click(img_more2)
             find_and_click(img_close)
+            find_and_click(img_close2)
+            find_and_click(img_close3, 8)
             find_and_click(img_ok)
             find_and_click(img_ok2)
 
             # 뒤로가야 하는것들
-            if find_img(img_appstore) or find_img(img_web) or find_img(img_appstore2):
+            if find_img(img_appstore, 10) or find_img(img_web, 10) or find_img(img_appstore2, 10) or find_img(img_appstore3, 10):
                 time.sleep(0.1)
                 find_and_click(img_back)
                 
             # x는 동적으로 추가되더라도 잘 실행 되기 위해
             for i in img_x_list:
-                find_and_click(img_path_x_list + '\\' + i, 1)
+                find_and_click(img_path_x_list + '\\' + i, 10)
 
             if switch_flag and time.time() - start_time >= 30:
                 make_switch()
