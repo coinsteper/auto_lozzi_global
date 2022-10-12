@@ -175,7 +175,7 @@ def find_and_click(img, pos=0):
         start_time = time.time()
 
         # 더 받기 랜덤한 좌표 클릭해서 봇체크 우회
-        if img == img_more or img == img_more2 or img == img_box or img == img_more_box2 or img == img_more_box_g:
+        if not 'x' in img:
             find_img = (find_img.left + random.randrange(-5, 5), find_img.top + random.randrange(-5, 5), find_img.width,
                         find_img.height)
             time.sleep(0.01)
@@ -268,7 +268,7 @@ if __name__ =='__main__':
             find_and_click(img_box, 5)
             find_and_click(img_more_box)
             find_and_click(img_more_box2)
-            #find_and_click(img_more_box_g)            
+            find_and_click(img_more_box_g)            
             b_ret = find_and_click(img_gold_box, 5)
             if b_ret:
                 time.sleep(0.2)
